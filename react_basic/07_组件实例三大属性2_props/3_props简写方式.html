@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>3_props简写方式</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test1'></div>
+        <div id='test2'></div>
+        <div id='test3'></div>
+
+        <!-- 引入React核心库 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入React-dom，用于支持react操作dom -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入prop-types，用于对标签属性进行限制 -->
+        <script type="text/javascript" src="../js/prop-types.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+            class Person extends React.Component{
+                static propTypes = {
+                    name: PropTypes.string.isRequired,  /* 限制名字必须是字符串类型，且必填 */
+                    sex: PropTypes.string,              /* 限制名字必须是字符串类型 */
+                    age: PropTypes.number,              /* 限制名字必须是数值 */
+                    speak:PropTypes.func,               /* 限制名字必须函数 */
+                }
+
+                static defaultProps = {
+                    sex:'Not explicit',                 /* 性别默认值 */
+                    age:18                              /* 年龄默认值 */
+                } 
+            
+                // 如果有state
+                // state = {}
+
+                // 如果要定义方法
+                // 'function name' = ()=>{}
+
+                render(){
+                    // console.log(this)
+                    // props是只读的，不能改的，但是可以运算
+                    // this.props.name = 'Mary'
+                    const {name,age,sex} = this.props
+                    return (
+                        <ul>
+                            <li>Name:   {name}</li>
+                            <li>Sex:    {sex}</li>
+                            <li>Age:    {age}</li>
+                        </ul>        
+                    )
+                }
+
+            }
+            
+            /* 对下面两段代码进行简写，目的是把这两段对Person组件加上类属性的代码合并到Person类定义当中去
+               使用的是static构造静态属性的方法 */
+            // // 对标签属性进行类型、必要性的限制
+            // Person.propTypes = {
+            //     // React 15及之前版本可以这么写，但是在16版本之后，PropTypes不再是React对象的属性了，单独使用prop-types.js定义了
+            //     name: PropTypes.string.isRequired,  /* 限制名字必须是字符串类型，且必填 */
+            //     sex: PropTypes.string,              /* 限制名字必须是字符串类型 */
+            //     age: PropTypes.number,              /* 限制名字必须是数值 */
+            //     speak:PropTypes.func,               /* 限制名字必须函数 */
+            //     /*如果希望传入函数，则propType是func而不是function，这样命名是为了避开JS的关键字和内置类型如function,String,Number等 */
+            // }
+            // // 制定默认的属性值
+            // Person.defaultProps = {
+            //     sex:'Not explicit',                 /* 性别默认值 */
+            //     age:18                              /* 年龄默认值 */
+            // } 
+
+
+            // const p = {name:100, age:18, sex:'Female'} 
+            /* react.development.js:2726 
+            Warning: Failed prop type: Invalid prop `name` of type `number` supplied to `Person`, expected `string`. 
+            in Person */
+            const p = {name:"Liu", age:18, sex:'Female'} 
+            ReactDOM.render(<Person name="Tom" age={19} sex="Female" speak={speak}/>, document.getElementById('test1'))
+            ReactDOM.render(<Person name="Jerry" age={17} sex="Male"/>, document.getElementById('test2'))
+            // 又是一个批量传数据的语法糖，但是要保证p中的key和const{name,age,sex}这里取数据用的key是一致的
+            // '...':展开运算符
+            // 在这里使用{}，是表示要在花括号内写一个JS表达式，在原生的JS中不能使用...展开对象，但是借助babel和react核心库就可以了
+            
+            ReactDOM.render(<Person {...p}/>, document.getElementById('test3'))
+            // ！！！但是！！！，这样写只适用于标签属性的传递，别的地方不能这么用
+            // console.log('@',...p) //这一行只会输出@,...p不会有结果
+            
+            function speak(){
+                console.log("I'm speaking.")
+            }   
+        </script>
+    </body>
+</html>

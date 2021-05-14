@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>1_props基本使用</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test1'></div>
+        <div id='test2'></div>
+        <div id='test3'></div>
+
+        <!-- 引入React核心库 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入React-dom，用于支持react操作dom -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+            class Person extends React.Component{
+                render(){
+                    // console.log(this)
+                    const {name,age,sex} = this.props
+                    return (
+                        <ul>
+                            <li>Name:   {name}</li>
+                            <li>Sex:    {sex}</li>
+                            <li>Age:    {age+1}</li>
+                        </ul>        
+                    )
+                }
+            }
+            const p = {name:'Liu', age:18, sex:'Female'}
+            // 传入的年龄是JS中的number类型，否则age+1的操作会不对
+            ReactDOM.render(<Person name="Tom" age={18} sex="Female"/>, document.getElementById('test1'))
+            ReactDOM.render(<Person name="Jerry" age={17} sex="Male"/>, document.getElementById('test2'))
+            // 又是一个批量传数据的语法糖，但是要保证p中的key和const{name,age,sex}这里取数据用的key是一致的
+            // '...':展开运算符
+            // 在这里使用{}，是表示要在花括号内写一个JS表达式，在原生的JS中不能使用...展开对象，但是借助babel和react核心库就可以了
+            
+            ReactDOM.render(<Person {...p}/>, document.getElementById('test3'))
+            // ！！！但是！！！，这样写只适用于标签属性的传递，别的地方不能这么用
+            console.log('@',...p) //这一行只会输出@,...p不会有结果
+        </script>
+    </body>
+</html>

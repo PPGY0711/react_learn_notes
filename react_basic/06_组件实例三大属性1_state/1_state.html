@@ -19,27 +19,46 @@
         <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
             // 1.创建组件
             class Weather extends React.Component{
+                
+                // 构造器调用几次？——1次
                 constructor(props){
+                    console.log('constructor')
                     super(props);
                     this.state = {isHot: false, temp:'20℃'}; // 借助构造器初始化状态
+                    // 解决changeWeather中this指向问题
+                    // 原理就是把类原型对象上的changeWeather方法通过bind指定函数的调用对象为Weather的实例对象，得到一个新的函数
+                    // 这个函数直接执行的时候内部的this就不是undefined而是Weather实例对象了
+                    // 而React在找方法的时候在实例上就找到了名为changeWeather的方法，就不会再往类原型上找了
+                    this.changeWeather = this.changeWeather.bind(this)
                 };
                 
+                // render调用几次？——1+N次，1指的是初始化的那次，N次是state更新次数
                 render(){
-                    console.log(this)
+                    console.log('render')
                     // 在render中读取状态
-                    const isHot = this.state.isHot
-                    return <h1 onClick={this.changeWeather}>今天天气很{isHot == true? '炎热':'凉爽'}</h1>
+                    const {isHot,temp} = this.state
+                    return <h1 onClick={this.changeWeather}>今天天气很{isHot == true? '炎热':'凉爽'},{temp}</h1>
                     // return <h1 onClick={demo()}>今天天气很{isHot == true? '炎热':'凉爽'}</h1>
                     // 写成demo()会把函数的返回值赋给onClick，这样子不能绑定事件，指定好函数即可
                 }
                 
+                // changeWeather调用几次？——点几次调几次
                 changeWeather(){
                     // changeWeather放在哪里？ —— 类的原型对象，供实例使用
                     // 通过Weather实例调用changeWeather时，changeWeather中的this就是Weather实例
-                    // !!!但是注意，在把changwWeather赋给onClick之后，不算是调用，只是多了一个引用
+                    // !!!但是注意，在把changwWeather赋给onClick之后，不算是调用，只是多了一个引用，相当于onClick只是拿到了函数的引用
                     // 在以后发生点击事件的时候，通过直接执行这个引用来实现事件，这个时候this不再指向Weather实例对象
                     // 并且由于changeWeather作为类中的方法，内部开启了严格模式，当不是通过类实例对象调用时，this也不会指向全局的window，而是undefined
-                    console.log(this.state.isHot);
+                    console.log('changeWeather')
+                    /* 获取原来的isHot值 */
+                    const isHot = this.state.isHot
+                    /* 严重注意：直接改this.state中的变量，React不承认这个更改！！！
+                       下面这行就是直接更改
+                    */
+                    // this.state.isHot = !isHot //错误写法
+                    // console.log(this)
+                    // 严重注意：要通过setState修改组件实例的状态，且更新是一种合并，不是替换
+                    this.setState({isHot:!isHot})
                 }
             }
             // 2.渲染组件到页面

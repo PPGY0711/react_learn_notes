@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>2_原生事件绑定</title>
+    </head>
+    <body>
+        <button id='btn1'>btn1</button>
+        <button id='btn2'>btn2</button>
+        <button onclick="demo()">btn3</button>
+        
+        <script type="text/javascript">
+            const btn1 = document.getElementById('btn1')
+            btn1.addEventListener('click',()=>{
+                alert('btn1 has been clicked!')
+            })
+            const btn2 = document.getElementById('btn2')
+            btn2.onclick = ()=>{
+                alert('btn2 has been clicked!')
+            }
+
+            function demo(){
+                alert('btn3 has been clicked!')
+            }
+        </script>
+    </body>
+</html>

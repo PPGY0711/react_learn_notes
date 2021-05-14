@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>2_类式组件</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test'></div>
+
+        <!-- 引入React核心库 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+         <!-- 引入React-dom，用于支持react操作dom -->
+         <script type="text/javascript" src="../js/react-dom.development.js"></script>
+          <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+            //1.创建类式组件，必须继承React中的Component，必须写render,且render函数必须有返回值
+            class MyComponent extends React.Component{
+                render(){
+                    // render是放在哪里的？——MyComponent的原型对象上，供实例使用
+                    // render中的this是谁？——MyComponent的实例对象<=>MyComponent组件实例对象，MyComponent{...}
+                    // props,refs,state，组件的3大属性，另外context也要关注
+                    console.log('render中的this：', this);
+                    return <h2>我是用类定义的组件(适用于【复杂组件】的定义)</h2>  
+                }
+            }
+            // 2.渲染组件到页面
+            ReactDOM.render(<MyComponent/>, document.getElementById('test'))
+            /*  执行了ReactDOM.render(<MyComponent/>.......之后发生了什么？
+                1.React解析组件标签，找到了MyComponent组件
+                2.发现组件时使用类定义的，随后new出来该类的实例并通过该实例调用到原型上的render方法
+                3.将render返回的虚拟DOM转为真实DOM，呈现在页面中
+            */
+        </script>
+    </body>
+</html>

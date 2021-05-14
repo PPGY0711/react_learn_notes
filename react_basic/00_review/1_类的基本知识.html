@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>1_类的基本知识</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // 创建一个Persion类
+            class Person{
+                // 构造器方法
+                constructor(name, age){
+                    // 构造器中的this是谁？——类的实例对象
+                    this.name = name
+                    this.age = age
+                }
+                // 一般方法，直接定义哈，不用function
+                speak(){
+                    // speak方法放在了哪里？——类的原型对象上，供实例使用
+                    // 通过Person实例调用speak时，speak中的this就是Person实例
+                    // console.log("I'm " + this.name + ". I'm " + this.age + ".")
+                    console.log(`I\'m ${this.name}. I\'m ${this.age}.`)
+                }
+            }
+            
+            // 创建一个Person的实例对象
+            /* const p1 = new Person('Tom',18)
+            const p2 = new Person('Jerry',19)
+            console.log(p1)
+            console.log(p2)
+            p1.speak()
+            p2.speak()
+            p1.speak.call({a:1,b:2})  */
+            /* cal改变了speak当中的this指向，但是借用了函数功能，所以要判断函数中的this需要搞清楚函数是怎么调用的 */
+
+            // 创建一个Student类，继承于Person类
+            class Student extends Person{
+                constructor(name, age, grade){
+                    super(name, age) /* 子类显式写构造器时必须调用父类的构造器，必须在开始就调用 */
+                    this.grade = grade
+                }
+                // 重写从父类继承过来的方法
+                speak(){
+                    console.log(`我叫 ${this.name}， 我的年龄是${this.age}， 我正在读 ${this.grade}`)
+                }
+                study(){
+                    // study方法放在了哪里？——类的原型对象上，供实例使用
+                    // 通过Student实例调用study时，study中的this就是Student实例
+                    console.log('我很努力的学习。')
+                }
+            }
+
+            /* const s1 = new Student('小张', '15', '高一')
+            console.log(s1)
+            s1.speak() 
+            s1.study() */
+            /* 1. Student类没有定义speak方法时如果调用speak方法，在Student的原型对象上没有找到，之后会往原型链上找，找到了父类Person的speak方法并调用 */
+            /* 
+                总结：
+                1. 类中的构造器不是必须写的，要对实例进行一些初始化的操作，如添加指定属性时才写。
+                2. 如果A类继承了B类，且A类中写了构造器，那么A类构造器中的super是必须要调用的。
+                3. 类中所定义的方法，都是放在了类的原型对象上，供实例去使用
+            */
+        </script>
+    </body>
+</html>

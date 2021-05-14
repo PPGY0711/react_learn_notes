@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>1_函数式组件</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test'></div>
+
+        <!-- 引入React核心库 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+         <!-- 引入React-dom，用于支持react操作dom -->
+         <script type="text/javascript" src="../js/react-dom.development.js"></script>
+          <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+            // 1.创建函数式组件
+            function MyComponent(){
+                console.log(this) /* this:undefined */
+                return <h2>我是用函数定义的组件(适用于【简单组件】的定义)</h2>  
+                /* 这些代码要经过babel的翻译，babel编译后开启了严格模式（'use strict'），禁止自定义函数中的this指向全局的window */
+            }
+            /* 
+                函数式组件定义要点：
+                1.函数名必须大写
+                2.必须有返回值（至少要有html结构）
+                3.ReactDOM.render(<函数名/> or <函数名></函数名>, 元素)
+            */
+            // 2.渲染组件到页面
+            ReactDOM.render(<MyComponent/>, document.getElementById('test'))/* 标签需要闭合 */
+            /* 这里不能直接render函数名，因为函数不允许作为DOM的结点，然后要加上标签符号<>，函数名大写 */
+            /* 执行了ReactDOM.render(<MyComponent/>.......之后发生了什么？
+                1.React解析组件标签，找到了MyComponent组件
+                2.发现组件时使用函数定义的，随后调用该函数，将返回的虚拟DOM转为真实DOM，呈现在页面中
+            */
+        </script>
+    </body>
+</html>

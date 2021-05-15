@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>4_函数式组件使用props</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test1'></div>
+        <div id='test2'></div>
+        <div id='test3'></div>
+
+        <!-- 引入React核心库 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入React-dom，用于支持react操作dom -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入prop-types，用于对标签属性进行限制 -->
+        <script type="text/javascript" src="../js/prop-types.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+            // class Person extends React.Component{
+            // //    类中的构造器能省略就省略
+            //     constructor(props){
+            //         // 构造器是否接收props，是否传递给super，取决于是否希望在构造器中通过this访问props，如果需要则必须接和必须传
+            //         super(props)
+            //         console.log(this.props)
+            //     }
+                
+                
+            //     // 对标签属性进行类型、必要性的限制
+            //     static propTypes = {
+            //         name: PropTypes.string.isRequired,  /* 限制名字必须是字符串类型，且必填 */
+            //         sex: PropTypes.string,              /* 限制sex属性必须是字符串类型 */
+            //         age: PropTypes.number,              /* 限制age属性必须是数值 */
+            //         // speak:PropTypes.func,               /* 限制spesk属性必须是函数 */
+            //     }
+            //     // 制定默认的属性值
+            //     static defaultProps = {
+            //         sex:'Not explicit',                 /* 性别默认值 */
+            //         age:18                              /* 年龄默认值 */
+            //     } 
+            
+            //     // 如果有state
+            //     // state = {}
+
+            //     // 如果要定义方法
+            //     // 'function name' = ()=>{}
+
+            //     render(){
+            //         // console.log(this)
+            //         // props是只读的，不能改的，但是可以运算
+            //         // this.props.name = 'Mary'
+            //         const {name,age,sex} = this.props
+            //         return (
+            //             <ul>
+            //                 <li>Name:   {name}</li>
+            //                 <li>Sex:    {sex}</li>
+            //                 <li>Age:    {age}</li>
+            //             </ul>        
+            //         )
+            //     }
+
+            // }
+            function Person(props){
+                const {name,sex,age} = props
+                return (
+                        <ul>
+                            <li>Name:   {name}</li>
+                            <li>Sex:    {sex}</li>
+                            <li>Age:    {age}</li>
+                        </ul>        
+                    )
+            }
+            // 对函数式组件的props进行限制只能通过以下方式
+            // 对标签属性进行类型、必要性的限制
+            Person.propTypes = {
+                name: PropTypes.string.isRequired,  /* 限制名字必须是字符串类型，且必填 */
+                sex: PropTypes.string,              /* 限制sex属性必须是字符串类型 */
+                age: PropTypes.number,              /* 限制age属性必须是数值 */
+                // speak:PropTypes.func,               /* 限制spesk属性必须是函数 */
+            }
+            // 制定默认的属性值
+            Person.defaultProps = {
+                sex:'Not explicit',                 /* 性别默认值 */
+                age:18                              /* 年龄默认值 */
+            } 
+            // 只传名字，其他属性会保持为默认值
+            ReactDOM.render(<Person name="Tom" sex="男" age={19}/>, document.getElementById('test1'))
+            ReactDOM.render(<Person name="Peter" />, document.getElementById('test2'))
+              
+        </script>
+    </body>
+</html>

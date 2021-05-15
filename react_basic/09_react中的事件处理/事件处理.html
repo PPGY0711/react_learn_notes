@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>事件处理</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test'></div>
+
+        <!-- 引入React核心库，全局多了React对象 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入React-dom，用于支持react操作dom，全局多了ReactDOM对象 -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入prop-types，用于对标签属性进行限制，全局多了PropTypes对象 -->
+        <script type="text/javascript" src="../js/prop-types.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+           class Demo extends React.Component{
+                /* 
+                    1)通过onXxx属性指定事件处理函数（注意大小写）
+                        a.React使用的是自定义（合成）事件，而不是使用的原生DOM事件 ————为了更好的兼容性
+                        b.React中的事件是通过实践委托方式处理的（委托给组件最外层的元素）————为了高效
+                    2)通过event.target得到发生事件的DOM元素对象————不要过度的使用ref
+                        当发生事件的事件源就是动作执行者时，直接通过event.target取DOM元素
+                */
+            
+                // 创建Ref容器
+                myRef = React.createRef() 
+                myRef2 = React.createRef() 
+
+                render(){
+                    return(
+                        <div>
+                            <input ref={this.myRef} type="text" placeholder="点击按钮提示数据" />&nbsp;
+                            <button onClick={this.showData}>点我提示左侧的数据</button>&nbsp;
+                            <input onBlur={this.showData2} type="text" placeholder="失去焦点提示数据" />&nbsp;
+                        </div>)
+                }
+                // 展示左侧框的数据
+                showData = ()=>{
+                    alert(this.myRef.current.value)
+                }
+                // 展示右侧框的数据
+                showData2 = (event)=>{
+                    alert(event.target.value)
+                }
+            }
+            ReactDOM.render(<Demo/>, document.getElementById('test'))
+        </script>
+    </body>
+</html>

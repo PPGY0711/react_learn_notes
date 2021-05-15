@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>1_非受控组件</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test'></div>
+
+        <!-- 引入React核心库，全局多了React对象 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入React-dom，用于支持react操作dom，全局多了ReactDOM对象 -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入prop-types，用于对标签属性进行限制，全局多了PropTypes对象 -->
+        <script type="text/javascript" src="../js/prop-types.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+            // 创建组件
+            class Login extends React.Component{
+
+                // 现用现取，就是非受控组件
+                handleSubmit = (event)=>{
+                    event.preventDefault() // 阻止默认事件（不让表单提交）
+                    const {username,password} = this
+                    alert(`你输入的用户名是:${username.value}，你输入的密码是${password.value}`)
+                }
+
+                render(){
+                    return (
+                        <form onSubmit={this.handleSubmit}>
+                        用户名：<input ref={c=>this.username=c} type="text" name="username"/>
+                        密码：<input ref={c=>this.password=c} type="password" name="password"/>
+                        <button>登录</button>
+                        </form>
+                    )
+                }
+            }
+            // 渲染组件
+            ReactDOM.render(<Login/>, document.getElementById('test'))
+        </script>
+    </body>
+</html>

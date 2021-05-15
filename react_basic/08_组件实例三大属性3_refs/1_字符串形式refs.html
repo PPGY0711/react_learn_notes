@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name='viewport' content="width=device-width, initial-scale=1.0">
-        <title>_</title>
+        <title>1_字符串类型refs</title>
     </head>
     <body>
         <!-- 准备好容器,React库引用是有顺序的 -->
@@ -19,7 +19,28 @@
         <script type="text/javascript" src="../js/prop-types.js"></script>
 
         <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
-           
+             class Demo extends React.Component{
+                render(){
+                    return(
+                        <div>
+                            <input ref="input1" type="text" placeholder="点击按钮提示数据" />&nbsp;
+                            <button onClick={this.showData}>点我提示左侧的数据</button>&nbsp;
+                            <input ref="input2" onBlur={this.showData2} type="text" placeholder="失去焦点提示数据" />
+                        </div>)
+                }
+
+                showData = ()=>{
+                    // const input = document.getElementById('input1')
+                    alert(this.refs.input1.value)
+                }
+
+                
+                showData2 = ()=>{
+                    // const input = document.getElementById('input1')
+                    alert(this.refs.input2.value)
+                }
+            }
+            ReactDOM.render(<Demo/>, document.getElementById('test'))
         </script>
     </body>
 </html>

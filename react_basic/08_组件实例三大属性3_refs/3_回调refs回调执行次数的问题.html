@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0">
+        <title>3_回调refs调用次数问题</title>
+    </head>
+    <body>
+        <!-- 准备好容器,React库引用是有顺序的 -->
+        <div id='test'></div>
+
+        <!-- 引入React核心库，全局多了React对象 -->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入React-dom，用于支持react操作dom，全局多了ReactDOM对象 -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将jsx转为js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+        <!-- 引入prop-types，用于对标签属性进行限制，全局多了PropTypes对象 -->
+        <script type="text/javascript" src="../js/prop-types.js"></script>
+
+        <script type="text/babel"> /* 此处一定要写babel，而不是javascript或者jsx */
+             class Demo extends React.Component{
+
+                showInfo = ()=>{
+                    const {input1} = this
+                    alert(input1.value)
+                }
+
+                state = {isHot:true}
+
+                changeWeather = ()=>{
+                    const isHot = this.state.isHot
+                    this.setState({isHot:!isHot})
+                }
+
+                saveInput = (c)=>{
+                    this.input1 = c
+                    console.log('@',c)
+                }
+
+                render(){
+                    //箭头函数用作回调函数， (curNode)=>{this.input1 = curNode}由于只有一个参数可以精简，去掉参数的括号
+                    // 另外由于只有一行执行语句，也可以精简，去掉花括号
+                    // return部分写的是jsx表达式，不能直接用js的注释方式注释掉语句，会被解释称页面的元素，把要注释的部分先用花括号括起来，让JSX认为这是JS表达式，再注释
+                    return(
+                        <div>
+                            <h2>今天天气很{this.state.isHot == true? "炎热":"凉爽"}</h2>
+                            {/* 以下是以内联函数形式定义的回调函数，更新的时候会执行两次，第一次传参null，第二次传参是当前节点input */}
+                            {/* <input ref={(c) => {this.input1=c;console.log('@',c)}} type="text"/><br/><br/> */}
+                            {/* 以class绑定函数形式定义的回调函数，自始至终也只会在初始化的时候执行一次 */}
+                            <input ref={this.saveInput} type="text" />
+                            <button onClick={this.showInfo}>点我提示左侧的数据</button>&nbsp;
+                            <button onClick={this.changeWeather}>点我切换天气</button>&nbsp;
+                        </div>)
+                }
+            }
+            ReactDOM.render(<Demo/>, document.getElementById('test'))
+        </script>
+    </body>
+</html>

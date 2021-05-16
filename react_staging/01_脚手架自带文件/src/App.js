@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
+// 函数定义的组件
 function App() {
   return (
     <div className="App">

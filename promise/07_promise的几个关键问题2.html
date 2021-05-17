@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>07_promise的几个关键问题2</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        // 常规：先指定回调函数，后改变状态
+            const p1 = new Promise((resolve, reject)=>{
+                setTimeout(() => {
+                    resolve(1)  //后改变状态（同时指定数据），异步执行回调函数
+                }, 1000);
+            })
+            p1.then( //先指定回调函数，保存当前指定的回调函数
+            value =>{
+                console.log('成功',value)
+            },
+            reason=>{
+                console.log('失败',reason)
+            })
+
+            // 如何先改状态，后指定回调函数
+            const p2 = new Promise((resolve, reject)=>{    
+                resolve(1)  //先改变状态（同时指定数据）              
+            })
+            p2.then( //后指定回调函数，异步执行回调函数
+            value =>{
+                console.log('成功2',value)
+            },
+            reason=>{
+                console.log('失败2',reason)
+            })
+            // .then这个函数同步执行，指定回调函数，但是回调函数是异步执行的，要放在队列里执行，这就是为什么--------在成功2之前输出
+            console.log('---------')
+            const p3 = new Promise((resolve, reject)=>{
+                setTimeout(() => {
+                    resolve(1)  //后改变状态（同时指定数据），异步执行回调函数
+                }, 1000);
+            })
+            setTimeout(() => {
+                p3.then( //先指定回调函数，保存当前指定的回调函数
+                value =>{
+                    console.log('成功3',value)
+                },
+                reason=>{
+                    console.log('失败3',reason)
+                })
+            }, 1100);
+            
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>05_为什么要使用Promise</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            /* 1.回调地狱举例（伪代码） */
+            // 不便于阅读，维护很麻烦
+            doFirstThing(function(result){
+                doSecondThing(result, function(secondResult){
+                    doThirdThing(secondResult, function(thirdResult){
+                        console.log('Got the third result.'+thirdResult)
+                    }, failureCallback)
+                }, failureCallback)
+            }, failureCallback)
+
+            /* 2.使用promise的链式调用解决问题 */
+            // 中间只需要写成功回调，异常处理只需要写一次（异常传透）
+            doFirstThing().then(function(result){
+                return doSecondThing(result)
+            })
+            .then(function(secondResult){
+                return doThirdThing(secondResult)
+            })
+            .then(function(thirdResult){
+                console.log('Got the third result: ' + thirdResult)
+            })
+            .catch(failureCallback)
+
+            /* 3.async/await：回调地狱的终极解决方案 */
+            // 从源码上看没有回调函数
+            async function request(){
+                try{
+                    const result = await doFirstThing()
+                    const secondResult = await doSecondThing(result)
+                    const thirdResult = await doThirdThing(secondResult)
+                    console.log('Got the third result:' + thirdResult)
+                }catch(error){
+                    failureCallback(error)
+                }
+            }
+        </script>
+    </body>
+</html>

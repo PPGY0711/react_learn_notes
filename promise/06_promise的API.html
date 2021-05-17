@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>06_promise的API</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // new Promise((resolve, reject) =>{
+            //     setTimeout(() => {
+            //         // 状态只能改一次
+            //         resolve('成功的数据')
+            //         // reject('失败的数据')
+                    
+            //     }, 1000);
+            // })
+            // .then(
+            //     // 指定成功回调
+            //     value=>{
+            //         console.log('onResolved()1',value)
+            //     }
+            // )
+            // .catch(
+            //     reason =>{
+            //         console.log('onRejected()1',reason)
+            //     }
+            // )
+
+            // 产生一个成功值为1的Promise对象
+            const p1 = new Promise((resolve, reject)=>{
+                setTimeout(() => {
+                    resolve(1)
+                }, 100);
+            })
+            const p2 = Promise.resolve(2)
+            const p3 = Promise.reject(3)
+            console.log(p1)     //Promise {<fulfilled>: 1}
+            console.log(p2)     //Promise {<fulfilled>: 2}
+            console.log(p3)     //Promise {<rejected>: 3}，同时报错，06_promise的API.html:34 Uncaught (in promise) 3
+
+            // 定义then和catch回调之后就没有错误提示了 
+            p1.then(value => {console.log(value)})
+            p2.then(value => {console.log(value)})
+            p3.catch(reason => {console.log(reason)})
+
+            // 相当于发了3个异步请求，只要有一个失败了就失败了
+            const pAll = Promise.all([p1,p2,p3])
+            pAll.then(
+                value =>{
+                    console.log("All onResolved()", value)
+                },
+                reason=>{
+                    console.log('All onRejected()', reason) //由于p3失败了，返回的是p3的失败的值
+                }
+            )
+
+            const pAll2 = Promise.all([p1,p2])
+            pAll2.then(
+                values =>{
+                    console.log("All2 onResolved()", values) //由于都成功了，返回的是所有成功的promise值数组，顺序和promise数组一致，与谁先执行完成无关
+                },
+                reason=>{
+                    console.log('All2 onRejected()', reason) 
+                }
+            )
+
+            // 竞赛：以最先完成的Promise值作为pRace的值
+            const pRace = Promise.race([p1,p2,p3])
+            pRace.then(
+                values =>{
+                    console.log("Race onResolved()", values) //由于p2首先完成，它的状态是成功，所以pRace成功且值为2
+                },
+                reason=>{
+                    console.log('Race onRejected()', reason) 
+                }
+            )
+
+            const pRace2 = Promise.race([p3, p1,p2])
+            pRace2.then(
+                values =>{
+                    console.log("Race2 onResolved()", values) 
+                },
+                reason=>{
+                    console.log('Race2 onRejected()', reason) //由于p3首先完成，它的状态是失败，所以pRace失败且值为3
+                }
+            )
+        </script>
+    </body>
+</html>

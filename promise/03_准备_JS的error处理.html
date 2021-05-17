@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>03_JS的Error处理</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // 1.常见的内置错误
+            // 1）ReferenceError：引用变量不存在
+            // console.log(a) //ReferenceError: a is not defined
+            // 2)TypeError：类型错误
+            /* let b = null
+            // console.log(b.xxx) //TypeError: Cannot read property 'xxx' of null
+            b = {}
+            b.xxx() //TypeError: b.xxx is not a function */
+            // 3）RangeError：范围错误
+            /* function fn(){
+                fn()
+            }
+            fn() //RangeError: Maximum call stack size exceeded */
+            // 达到了函数嵌套层数限制
+            // 4)语法错误
+            // 假如要写一个空串字符串
+            // const c = """" //SyntaxError: Unexpected string
+
+            // 2.错误处理
+            // try{
+            //     let d
+            //     console.log(d.xxx)
+            // }catch(error){
+            //     console.log(error.message)
+            //     console.log(error.stack)
+            // }
+            // console.log('After Error')
+
+            // 抛出错误
+            // function sth(){
+            //     if(Date.now()%2===1){
+            //         console.log('当前时间为奇数，可以执行')
+            //     }else{
+            //         // 抛出异常，由调用者来处理
+            //         throw new Error('当前时间为偶数，无法执行任务')
+            //     }
+            // }
+
+            // try{
+            //     sth()
+            // }catch(error){
+            //     alert(error.message)
+            // }
+        </script>
+    </body>
+</html>

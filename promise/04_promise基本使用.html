@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>04_promise基本使用</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // 1.创建一个新的promise对象
+            // 目前在开发中，变量类型先尽量用const，如果后面有改变，改用let
+            const p = new Promise((resolve, reject)=>{// 执行器函数，是同步回调
+                console.log('执行executor')
+                // 2.执行异步操作任务
+                setTimeout(() => {
+                    const time = Date.now()
+                    // 如果当前时间是偶数，就代表成功，否则失败
+                    if(time%2===0){
+                        // 3.1.如果成功了，调用resolve(value)
+                        resolve('成功的数据,time='+time)
+                    }else{
+                        // 3.2.如果失败了，调用reject(reason)
+                        reject('失败的数据，time='+time)
+                    }
+                }, 1000);
+            })
+            console.log('new Promise之后')
+            // Promise指定回调函数方式更灵活
+            setTimeout(() => {
+                // 在异步任务执行完成之后也可以接收到结果
+                p.then(
+                // 这里面是有顺序的，先定义成功回调的函数，再定义失败回调的函数
+                // 并且对于参数名字其实可以任取，但是value和reason比较常用
+                value => {
+                    // onResolved
+                    // 接收得到成功的value数据
+                    console.log('成功的回调',value)
+                },
+                reason => {
+                    // onRejected
+                    // 接收得到失败的reason数据
+                    console.log('失败的回调',reason)
+                },
+                
+            )
+            }, 2000);
+            
+        </script>
+    </body>
+</html>

@@ -1,1 +1,3 @@
-尚硅谷React2021课程笔记
+尚硅谷React2021课程笔记，见react文件夹
+尚硅谷Promise课程笔记，见promise文件夹
+尚硅谷axios课程笔记，见axios文件夹

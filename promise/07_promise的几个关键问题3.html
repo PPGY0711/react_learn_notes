@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>07_promise的几个关键问题3</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        // 常规：先指定回调函数，后改变状态
+            new Promise((resolve, reject)=>{
+                resolve(1) //注意：resolve和reject只有在执行器函数里面才能调用
+                // reject(1)
+            })
+            .then(
+            value =>{
+                console.log('onResolved()1',value)
+                // return 3
+                // return Promise.resolve(4)
+                // return Promise.reject(5)
+                throw 6
+            },
+            reason=>{
+                console.log('onRejected()1',reason)
+            })
+            .then( 
+            value =>{
+                console.log('onResolved()2',value)
+            },
+            reason=>{
+                console.log('onRejected()2',reason)
+            })
+
+            
+            
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>07_promise的几个关键问题5</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        // 常规：先指定回调函数，后改变状态
+        new Promise((resolve, reject)=>{
+                // resolve(1)
+                reject(1)
+            })
+            .then(
+            value =>{
+                console.log("onResolved1()->",value)
+                // resolve(2)
+                // 如果返回同步的结果，直接return
+                return 2
+            },
+            // reason=>{
+            //     console.log('onRejected1()->',reason)
+            // })
+            // reason => {throw reason}
+            )
+            .then(
+            value =>{
+                console.log('onResolved2()->',value)
+                // 如果要启动异步任务，那么一定要包在一个新的Promise里面
+                return 3
+            },
+            // reason=>{
+            //     console.log('onRejected2()->',reason)
+            // })
+            // reason => {throw reason}
+            )
+            .then(
+                value =>{
+                    console.log("onResolved3()->",value)
+                },
+                //箭头除了定义匿名函数，还可以表示return
+                // reason => reason  //这种写法会让这个.then返回的promise对象状态为resolved
+                // reason => throw reason //这种写法错误，相当于return throw reason
+                // reason => {throw reason}
+            ).catch(reason=>{
+                console.log("onRejected1()",reason)
+                // return Promise.reject(reason) //如果这么写，还会继续往下传
+                return new Promise(()=>{}) //返回一个pending的promise，可以中断这个promise链
+            })
+            .then(
+                value =>{
+                    console.log('onResolved3()',value)
+                },
+                reason =>{
+                    console.log('onRejected2()', reason)
+                }
+            )
+
+            //这些.then中没有明确写出onReject，但其实中间Rejected状态的promise的值一层层传递到了.catch中，当然如果中间有onRejected的处理就不一样了
+            
+            
+        </script>
+    </body>
+</html>

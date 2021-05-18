@@ -103,3 +103,67 @@ typora-copy-images-to:media
    3. 什么时候才能得到数据？
       1. 如果先指定的回调，那当状态发生改变时，回调函数就会调用，得到数据
       2. 如果先改变的状态，那当指定回调时，回调函数就会调用，得到数据
+4. promise.then()返回的新promise的结果由什么决定？
+   1. 简单表达：由then()指定的回调函数执行的结果决定
+   2. 详细表达：
+      1. 如果抛出异常，新promise变为rejected，reason为抛出的异常
+      2. 如果返回的是非promise的任意值，新promise变为resolved，value为返回的值
+      3. 如果返回的是另一个新promise，此promise的结果就会成为新promise的结果
+5. Promise如何串连多个操作任务？
+   1. Promise的then()返回一个新的Promise，可以开成then()的链式调用
+   2. 通过then的链式调用串连多个同步/异步任务
+6. Promise异常传透？
+   1. 当使用Promise的then链式调用时，可以在最后指定失败的回调
+   2. 前面任何操作中出现了异常，都会传到最后失败的回调中处理
+7. 中断Promise链
+   1. 当使用Promise的then链式调用时，中间中断，不再调用后面的回调函数
+   2. 办法：在回调函数中返回一个pending状态的Promise对象
+
+## 自定义（手写）Promise
+### 3.1. 定义整体结构
+```javascript
+(function (window){
+   /*
+    
+    Promise构造函数
+   
+    executor：内部同步执行的函数(resolve,reject)=>{}
+   
+    */
+   function Promise(executor){
+
+   }
+
+   /*
+    
+    为promise指定成功/失败的回调函数
+    
+    函数的返回值是一个新的Promise对象
+  
+    */
+   Promise.prototype.then = function(onResolved, onRejected){
+
+   }
+
+   /*
+    
+    为promise指定失败的回调函数
+    
+    是then(null, onRejected)的语法糖
+  
+    */
+   Promise.prototype.catch = function(onRejected){
+
+   }
+
+
+   /*
+    
+    返回一个指定了成功value的Promise对象
+  
+    */
+   Promise.resolve = function(value){
+
+   }
+})
+```

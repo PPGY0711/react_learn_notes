@@ -1,7 +1,3 @@
----
-typora-copy-images-to:media
----
-
 ## React简介
 
 ### 1.是什么？

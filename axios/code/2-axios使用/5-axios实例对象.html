@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <link crossorigin="anonymous" href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <title>5-axios实例对象</title>
+</head>
+<body>
+    <div class="container">
+        <!-- 
+            HTTP规范中与服务区交互的方式
+            1、POST /url 创建  
+            2、DELETE /url/xxx 删除 
+            3、PUT /url/xxx 更新
+            4、GET /url/xxx 查看
+         -->
+        <h2 class="page-header">其他使用</h2>
+        <button class="btn btn-primary">发送GET请求</button>
+        <button class="btn btn-warning">发送POST请求</button>
+    </div>
+    <script>
+        // 获取按钮
+        const btns = document.getElementsByTagName('button')
+        // 创建实例对象 http://localhost:3000/comments
+        const duanzi = axios.create({
+            baseURL: "https://api.apiopen.top",
+            timeout:2000
+        })
+        // 这里duanzi与axios对象的功能几近是一样的
+        console.log(duanzi)
+        duanzi({
+            url:'/comments'
+        }).then(response=>{
+            console.log(response)
+        })
+    </script>
+</body>
+</html>

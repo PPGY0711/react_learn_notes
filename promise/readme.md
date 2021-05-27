@@ -50,7 +50,7 @@ typora-copy-images-to:media
 2. pending变为rejected
 说明：只有这2中，且一个promise对象只能改变一次，无论变为成功还是失败，都会有一个结果数据，成功的数据一般称为value，失败的数据一般称为reason
 #### 2.1.3 Promise基本流程
-![](media/promise working schedule.jpg)
+![](media/promise_working_schedule.jpg)
 
 ### 2.2. 为什么要使用Promise？
 #### 2.2.1 指定回调函数的方式更加灵活

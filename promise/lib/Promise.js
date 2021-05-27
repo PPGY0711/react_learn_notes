@@ -186,7 +186,31 @@
     返回一个promise，只有当所有promise都成功时才成功，否则只要有一个失败的就失败
     */
     Promise.all = function(promises){
-            
+        // 用来保存所有成功value的数组
+        const values = new Array(promises.length) 
+        // 用来保存成功promise的数量
+        let resolvedCount = 0
+        return new Promise((resolve, reject)=>{
+            // 遍历获取每个promise的结果
+            promises.forEach((p, index) =>{
+                Promise.resolve(p).then(
+                    value =>{
+                        resolvedCount++ // 成功的数量+1
+                        //p成功，将成功的value保存到values
+                        //按promise数组的顺序保存value
+                        values[index] = value
+                        //如果全部成功了，将return的Promise改为成功
+                        if(resolvedCount === promises.length){
+                            resolve(values)
+                        }
+                    },
+                    reason =>{
+                        // 只要有一个失败了，return的promise就失败
+                        reject(reason)
+                    }
+                )
+            })
+        })
     }
 
     /* 
@@ -194,7 +218,58 @@
     返回一个promise，其结果由第一个完成的promise决定
      */
     Promise.race = function(promises){
-        
+        return new Promise((resolve, reject)=>{
+            // 遍历获取每个promise的结果
+            promises.forEach((p, index) =>{
+                // 也有可能传入的不是Promise，外面包一层
+                Promise.resolve(p).then(
+                    value =>{
+                        // 一旦有成功的，将return的promise变为成功
+                        resolve(value)
+                    },
+                    reason =>{
+                        // 一旦有失败的，将return的promise变为失败
+                        reject(reason)
+                    }
+                )
+            })
+        })
     }
+
+    //添加Promise自定义方法
+    /* 
+     返回一个Promise对象
+     它在指定的时间后才确定结果
+     */
+    Promise.resolveDelay = function(value, time){
+        //返回一个成功/失败的promise
+        return new Promise((resolve, reject)=>{
+            setTimeout(() => {
+                // value是promise
+                if(value instanceof Promise){
+                    value.then(resolve, reject)
+                }else{
+                // value不是promise => promise变为成功，数据是value
+                    resolve(value)
+                }
+            }, time);
+        })
+    }
+
+    /* 
+     返回一个Promise对象
+     它在指定的时间后才失败
+     */
+     Promise.rejectDelay = function(reason, time){
+        //返回一个失败的Promise
+        return new Promise((resolve, reject)=>{
+            setTimeout(() => {
+                reject(reason)
+            }, time);
+        })
+    }
+
+
+    //向外暴露Promise函数
     window.Promise = Promise
 })(window)

@@ -5,7 +5,8 @@
         <title>08_自定义Promise库</title>
     </head>
     <body>
-        <script src="./lib/Promise.js" type="text/javascript"></script>
+        <!-- <script src="./lib/Promise.js" type="text/javascript"></script> -->
+        <script src="./lib/Promise_class.js" type="text/javascript"></script>
         <script>
             // const p = new Promise((resolve, reject)=>{
             //     setTimeout(() => {
@@ -66,10 +67,37 @@
             // )
             const p1 = Promise.resolve(2)  //如果是一般值，p1成功，value就是这个值
             const p2 = Promise.resolve(Promise.resolve(3))  //如果是成功的promise，p2成功，value是这个promise的value
-            const p3 = Promise.resolve(Promise.reject(4))   //如果是失败的promise，p3成功，reason这恶=个promise的reason
-            p1.then(value=>{console.log('p1',value)})
-            p2.then(value=>{console.log('p2',value)})
-            p3.catch(reason=>{console.log('p1',reason)})
+            const p3 = Promise.resolve(Promise.reject(4))   //如果是失败的promise，p3失败，reason是这个promise的reason
+            // p1.then(value=>{console.log('p1',value)})
+            // p2.then(value=>{console.log('p2',value)})
+            // p3.catch(reason=>{console.log('p1',reason)})
+            const p4 = Promise.resolveDelay(5,1000)
+            const pAll2 = Promise.all([p4, 7, p1,p2])
+            pAll2.then(
+                values =>{
+                    console.log("All2 onResolved()", values)
+                },
+                reason=>{
+                    console.log('All2 onRejected()', reason) 
+                }
+            )
+            const p5 = Promise.reject(6)
+            // 竞赛：以最先完成的Promise值作为pRace的值
+            const pRace = Promise.race([p4, 7 ,p5, p2 ,p1, p3])
+            pRace.then(
+                values =>{
+                    console.log("Race onResolved()", values) //由于p2首先完成，它的状态是成功，所以pRace成功且值为2
+                },
+                reason=>{
+                    console.log('Race onRejected()', reason) 
+                }
+            )
+
+            const pdelay = Promise.resolveDelay(66, 2000)
+            const pdelay2 = Promise.rejectDelay(77, 3000)
+            pdelay.then(value=>{console.log('pdelay onResolved=>',value)})
+            pdelay2.catch(reason=>{console.log('pdelay2 onResolved=>',reason)})
+            
         </script>
     </body>
 </html>

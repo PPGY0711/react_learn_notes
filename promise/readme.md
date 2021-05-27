@@ -94,7 +94,7 @@ typora-copy-images-to:media
    1. resolve(value)：如果当前是pending，就会变为resolved
    2. reject(reason)：如果当前是pending，就会变为rejected
    3. 抛出异常，如果当前是pending，就会变为rejected
-2. 一个Promise指定多个成功/失败回调回函，都会调用吗？——当promise改编为对应状态时都会调用
+2. 一个Promise指定多个成功/失败回调回函，都会调用吗？——当promise改变为对应状态时都会调用
 3. 改变promise状态和指定回调函数谁先谁后？
    1. 都有可能，正常情况下是先指定回调再改变状态，但也可以先改状态再指定回调
    2. 如何先改状态再指定回调？
@@ -167,3 +167,34 @@ typora-copy-images-to:media
    }
 })
 ```
+具体实现见lib文件夹下的Promise.js（函数版本）和Promise_class.js（类版本）
+
+## async与await
+### 4.1 mdn文档
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/async_function
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/await
+
+### 4.2 async函数
+1. 函数的返回值为Promise对象
+2. Promise对象的结果由async函数执行的返回值决定
+
+### 4.3 await表达式
+1. await右侧的表达式一般为Promise对象，但也可以是其他的值
+2. 如果表达式是promise对象，await返回的是promise成功的值
+3. 如果表达式是其他值，直接将此值作为await的返回值
+
+### 4.4 注意
+await必须写在async函数中，但async函数中可以没有await
+如果await的promise失败了，就会抛出异常，需要通过try...catch来捕获处理
+
+## JS异步之宏队列与微队列
+### 5.1 原理图
+![](media/JS异步之宏队列与微队列原理图.jpg)
+
+### 5.2说明
+1. JS中用来存储执行回调函数的队列包含2个不同的特定的队列
+2. 宏队列：用来保存执行的宏任务（回调），比如：定时器回调/DOM事件回调/ajax回调
+3. 微队列：用来保存执行的微任务（回调），比如：Promise的回调/MutationObserver的回调
+4. JS执行时会区别这2个队列
+   1. JS引擎首先必须执行所有的初始化同步任务代码
+   2. 每次准备取出第一个宏任务执行前，都要将所有的微任务一个一个取出来执行

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11_Promise相关面试题4</title>
+</head>
+<body>
+    <script>
+       setTimeout(() => {
+           console.log("0")
+       }, 0);
+       new Promise((resolve,reject)=>{
+           console.log("1")
+           resolve()
+       }).then(()=>{
+           console.log("2")
+           new Promise((resolve, reject)=>{
+               console.log("3")
+               resolve()
+           }).then(()=>{
+               console.log("4") 
+                // 这个回调加入微队列的时候其对应的Promise状态还没有改变，后一个.then还是会执行，因为.then是同步的，那么就是完成指定回调的动作等待Promise完成后执行
+                // 同时外面包裹的17行定义的.then对应的Promise回调执行结束，返回Undefined，所以第29行定义的.then会执行，又因为Promise完成了，所以对应的onResolved回调进入微队列
+           }).then(()=>{
+               console.log("5")
+           }) //虽然最后一个
+       }).then(()=>{
+           console.log("6")
+       })
+
+       new Promise((resolve,reject)=>{
+           console.log("7")
+           resolve()
+       }).then(()=>{
+           console.log("8")
+       })
+       //1 7
+       /* 
+       宏：[0]
+       微：[2，8]
+       */
+        //1 7 2 3 
+       /* 
+       宏：[0]
+       微：[8,4,6]
+       */
+        //1 7 2 3 8 4 6 5
+       /* 
+       宏：[0]
+       微：[]
+       */
+        //1 7 2 3 8 4 6 5 0
+       /* 
+       宏：[]
+       微：[]
+       */
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>09_async与await</title>
+    </head>
+    <body>
+        <script>
+            // async函数的返回值是一个Promise对象
+            // async函数返回的promise的结果由函数执行的结果决定
+            async function fn1(){
+                // return 1
+                throw 2
+                // return Promise.reject(3)
+                // return new Promise((resolve,reject)=>{
+                //     setTimeout(() => {
+                //         resolve(4)
+                //     }, 1000);
+                // })
+            }
+
+            const result = fn1()
+            console.log(result)
+            result.then(
+                value =>{
+                    console.log('onResolved()', value)
+                },
+                reason =>{
+                    console.log('onRejected()', reason)
+                }
+            )
+            function fn2(){
+                return new Promise((resolve,reject)=>{
+                    setTimeout(() => {
+                        // resolve(5)
+                        reject(6)
+                    }, 1000);
+                })
+            }
+
+            function fn4() {
+                return 7
+            }
+            async function fn3(){
+                // const value = await fn2() //await右侧表达式为promise，得到的结果就是promise成功的value
+                // const value = await 6 //await右侧表达式不是promise，得到的结果就是表达式本身的值
+                // const value = await fn4()
+                try {
+                    // var value = await fn2();
+                    const value = await fn1() //得到的是fn1返回的Promise的值（成功则为该promise的value，失败则抛出异常，由e接收失败的值
+                    console.log('value: ', value)
+                } catch (e) {
+                    console.log('失败的值：', e); // 30
+                }
+                
+            }
+            
+            fn3()
+        </script>
+    </body>
+</html>

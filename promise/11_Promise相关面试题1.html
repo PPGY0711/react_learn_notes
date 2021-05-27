@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11_Promise相关面试题1</title>
+</head>
+<body>
+    <script>
+        setTimeout(() => {
+            console.log(1)
+        }, 0);  //立即放入宏队列
+        Promise.resolve().then(()=>{
+            console.log(2)
+        })      //立即放入微队列
+        Promise.resolve().then(()=>{
+            console.log(4)
+        })      //立即放入微队列
+        console.log(3) //同步代码立即执行
+        //先一个一个执行微队列中的两个微任务，再执行宏队列中的setTimeout任务
+        // 3，2，4，1
+    </script>
+</body>
+</html>

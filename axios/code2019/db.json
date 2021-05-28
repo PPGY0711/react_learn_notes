@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "title": "xhr request++",
+      "author": "Maki & Mai",
+      "id": 1
+    },
+    {
+      "title": "json-server++++",
+      "author": "typicode++++",
+      "id": 2
+    },
+    {
+      "title": "JuJuTsuKaiSen",
+      "author": "jjxx",
+      "id": 7
+    },
+    {
+      "title": "JuJuTsuKaiSen",
+      "author": "jjxx",
+      "id": 8
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

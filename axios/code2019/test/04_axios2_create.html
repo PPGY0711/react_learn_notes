@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <title>axios.create()</title>
+</head>
+<body>
+    <!-- 
+
+    1) axios.create(config)
+    1. 根据指定配置创建一个新的axios，也就是每个新axios都有自己的配置
+    2. 新axios只是没有取消请求和批量发送请求的方法，其他所有语法都是一致的
+    3. 为什么要设计这个语法？
+        1. 需求：项目中有部分接口需要的配置与另一部分接口需要的配置不太一样，如何处理
+        2. 解决：创建2个新axios，每个都有自己特有的配置，分别应用到不同需求的接口请求中
+    -->
+    <script>
+        axios.defaults.baseURL = 'http:localhost:3000'
+        axios({
+            url:'/posts' //请求3000端口
+        })
+        const instance = axios.create({
+            baseURL: 'http:localhost:4000'
+        })
+        // 使用instance发送请求
+        instance({
+            url: '/xxx' //请求4000端口
+        }) //instance作为函数使用
+        instance.get('/xxxx')  //instance作为对象使用
+    </script>
+</body>
+</html>

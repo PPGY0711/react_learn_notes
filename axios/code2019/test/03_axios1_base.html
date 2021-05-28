@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <title>03_axios1_base</title>
+</head>
+<body>
+    <div>
+        <button onclick="testGet()">GET请求</button>
+        <button onclick="testPost()">POST请求</button>
+        <button onclick="testPut()">PUT请求</button>
+        <button onclick="testDel()">DELETE请求</button>     
+    </div>
+    <script>
+        // 指定默认配置
+        axios.defaults.baseURL = 'http://localhost:3000'
+        /*  1. GET请求：从服务器端获取数据 */
+        function testGet(){
+            axios({
+                url: '/posts',
+                params:{
+                    id: 1
+                }
+            })
+            .then(response=>{
+                console.log("/posts get", response.data)
+            })
+        }
+
+        /*  2. POST请求：向服务器端添加数据 */
+        function testPost(){
+            axios({
+                url: '/posts',
+                method: 'POST',
+                data: {"title":"JuJuTsuKaiSen","author":"jjxx"}
+            })
+            .then(response=>{
+                console.log('/posts post', response.data)
+            })
+        }
+
+        /*  3. PUT请求：更新服务器端数据 */
+        function testPut(){
+            axios({
+                url: '/posts/2',
+                method: 'put',
+                data: {"title":"json-server++++","author":"typicode++++"}
+            })
+            .then(response=>{
+                console.log('/posts put', response.data)
+            })
+        }
+
+        /*  4. DELETE请求：删除服务器端数据 */
+        function testDel(){
+            axios({
+                url: '/posts/6',
+                method: 'delete'
+            })
+            .then(response=>{
+                console.log('/posts delete', response.data)
+            })
+        }
+    </script>
+</body>
+</html>

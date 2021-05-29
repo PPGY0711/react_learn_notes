@@ -5,7 +5,19 @@
         <title>React脚手架</title>
         <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
         <!-- Github搜索案例当中引入 -->
-        <link rel="stylesheet" href='./css/bootstrap.css'>
+        <!-- './css/bootstrap.css'是相对路径写法，这样子的话可能会导致样式丢失错误（路由可能会导致路径变化 -->
+        <!-- <link rel="stylesheet" href='./css/bootstrap.css'> -->
+        <!-- 解决方式1，不写成相对路径 -->
+        <!-- <link rel="stylesheet" href='/css/bootstrap.css'> -->
+        <!-- 解决方式2，使用%PUBLIC_URL%得到资源的绝对路径 -->
+        <link rel="stylesheet" href='%PUBLIC_URL%/css/bootstrap.css'>
+        
+        <style>
+            .atguigu{
+                background-color: rgb(245, 127, 31) !important;
+                color: white !important
+            }
+        </style>
     </head>
     <body>
         <div id="root"></div>

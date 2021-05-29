@@ -1,0 +1,33 @@
+import React, { Component } from 'react'
+import MyNavLink from '../../components/MyNavLink'
+import {Route, Switch, Redirect} from 'react-router-dom'
+import News from './News'
+import Message from './Message'
+export default class Home extends Component {
+    render() {
+        console.log("Home组件的props：", this.props)
+        return (
+            <div>
+                <div>
+                <h3>我是Home的内容</h3>
+                    <ul className="nav nav-tabs">
+                    <li>
+                        <MyNavLink replace={true} to="/home/news">News</MyNavLink>
+                    </li>
+                    <li>
+                        <MyNavLink replace={true} to="/home/message">Message</MyNavLink>
+                    </li>
+                    </ul>
+                </div>
+                <div>
+                  {/* 注册路由 */}
+                  <Switch>
+                      <Route path="/home/news" component={News}></Route>
+                      <Route path="/home/message" component={Message}></Route>
+                      <Redirect to="/home/news"></Redirect>
+                  </Switch>
+                </div>
+            </div>
+        )
+    }
+}

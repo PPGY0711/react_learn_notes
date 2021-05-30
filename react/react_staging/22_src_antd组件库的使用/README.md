@@ -1,0 +1,1 @@
+**注**：用这个作为src文件夹使用的时候把config-overrides.js移到src外面，到react-app的根目录中

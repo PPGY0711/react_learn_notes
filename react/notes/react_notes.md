@@ -531,7 +531,7 @@ const store = createStore(reducer)
 #### 7.6.1. 理解
 1.	一个react插件库
 2.	专门用来简化react应用中使用redux
-#### 7.6.2. react-Redux将所有组件分成两大类
+#### 7.6.2. react-redux将所有组件分成两大类
 1.	UI组件
    1. 只负责 UI 的呈现，不带有任何业务逻辑
    2. 通过props接收数据(一般数据和函数)
@@ -541,6 +541,7 @@ const store = createStore(reducer)
    1. 负责管理数据和业务逻辑，不负责UI的呈现
    2. 使用 Redux 的 API
    3. 一般保存在containers文件夹下
+![](media/react-redux模型图.png)
 #### 7.6.3. 相关API
 1.	```Provider```：让所有组件都可以得到state数据
  
@@ -551,7 +552,7 @@ const store = createStore(reducer)
 4.	```mapDispatchToProps```：将分发action的函数转换为UI组件的标签属性
 ### 7.7. 使用上redux调试工具
 #### 7.7.1. 安装chrome浏览器插件
- 
+Redux Dev Tools
 #### 7.7.2. 下载工具依赖包
 ```npm install --save-dev redux-devtools-extension```
 
@@ -570,6 +571,6 @@ const store = createStore(reducer)
 2.	常见的高阶函数: 
    1. 定时器设置函数
    2. 数组的```forEach()/map()/filter()/reduce()/find()/bind()```
-   3. promise
-   4. react-redux中的connect函数
+   3. ```promise```
+   4. react-redux中的```connect```函数
 3.	作用: 能实现更加动态, 更加可扩展的功能
